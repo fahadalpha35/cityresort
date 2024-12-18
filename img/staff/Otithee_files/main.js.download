@@ -1,0 +1,204 @@
+(function() {
+  "use strict";
+  
+  /*------------------------------------------------------------------
+  
+    01. Custom easings
+  
+  -------------------------------------------------------------------*/
+  
+  window.App = {};
+  
+  App.html = document.querySelector('html');
+  App.body = document.querySelector('body');
+  // App.SMcontroller = new ScrollMagic.Controller();
+  
+  window.onload = function () {
+    document.fonts.ready.then(function () {
+      // initialReveal()
+      initComponents()
+    });
+  }
+  
+  // Reloads all scripts when navigating through pages
+  function initComponents() {
+    // lazyLoading()
+    // Accordion.init()
+    // Tabs.init()
+    // sectionSlider()
+    // Select.init(".js-select")
+    // parallaxInit()
+    Events.init()
+    Events.ddInit()
+    // Header.init()
+    // Header.headerSticky()
+  
+    // testimonialsSlider()
+    // testimonialsSlider2()
+    // cardImageSlider()
+    // mastheadSlider4()
+    // mastheadSlider7()
+    // mastheadSlider8()
+    // dropDown()
+    // clickElToggle()
+    // carsSlider()
+    // cruiseSlider()
+    // singleMenu()
+  
+    // Calendar.init()
+    // calendarInteraction()
+    // calendarInteraction2()
+  
+    // testimonialsSlider3()
+    // mastheadSlider9()
+    // galleryInit()
+    // pinOnScroll()
+    // lineChart()
+    // parallaxIt()
+    // timeRangeSliderInit()
+    // priceRangeSliderInit()
+    // countChange()
+    // liveSearch()
+    // initMap()
+    // initMapPlaces()
+    // initMapSingle()
+    // languageSwitch()
+    // priceSwitch()
+  
+    // ShowMore.init()
+  
+    //
+    // your custom plugins init here
+    //
+  }
+  
+  
+
+  window.onclick = function(event) {
+    if (
+      !event.target.closest("[data-x-dd-click]") &&
+      !event.target.closest("[data-x-dd]")
+    ) {
+      Events.closeAllDropdowns()
+    }
+  
+    if (
+      !event.target.classList.contains('dropdown__button') &&
+      !event.target.classList.contains('js-dropdown-title')
+    ) {
+      const allDD = document.querySelectorAll('.js-click-dropdown.-is-el-visible')
+      if (allDD) {
+        allDD.forEach((el) => { el.classList.remove('-is-el-visible') })
+      }
+    
+      const allActiveDD = document.querySelectorAll('.-is-dd-active')
+      if (allActiveDD) {
+        allActiveDD.forEach((el) => el.classList.remove('-is-dd-active'))
+      }
+    }
+  
+    if (!event.target.closest('.js-select')) {
+      const targets = document.querySelectorAll('.js-select')
+      if (!targets) return
+      
+      targets.forEach(el => {
+        if (el.querySelector('.-is-visible')) {
+          el.querySelector('.-is-visible').classList.remove('-is-visible')
+        }
+      })
+    }
+  
+    if (!event.target.closest('.js-multiple-select')) {
+      const targets = document.querySelectorAll('.js-multiple-select')
+      if (!targets) return
+      
+      targets.forEach(el => {
+        if (el.querySelector('.-is-visible')) {
+          el.querySelector('.-is-visible').classList.remove('-is-visible')
+        }
+      })
+    }
+  }
+  
+  const Events = (function() {
+    function init() {
+      const targets = document.querySelectorAll("[data-x-click]")
+      if (!targets) return
+  
+      targets.forEach((eventTarget) => {
+        const attributes = eventTarget.getAttribute('data-x-click').split(', ')
+        
+        attributes.forEach((el) => {
+          const target = document.querySelector(`[data-x=${el}]`)
+
+          eventTarget.addEventListener('click', () => {
+            const toggleClass = target.getAttribute('data-x-toggle')
+            target.classList.toggle(toggleClass)
+          })
+        })
+      })
+    }
+  
+    function ddInit() {
+      const targets = document.querySelectorAll(".js-form-dd")
+      if (!targets) return
+  
+      targets.forEach((el) => {
+        const eventTarget = el.querySelector('[data-x-dd-click]')
+        const attributes = eventTarget.getAttribute('data-x-dd-click').split(', ')
+        
+        attributes.forEach((el2) => {
+          const target = el.querySelector(`[data-x-dd=${el2}]`)
+          const toggleClass = target.getAttribute('data-x-dd-toggle')
+          
+          eventTarget.addEventListener('click', () => {
+            if (eventTarget.querySelector('.js-dd-focus'))
+              eventTarget.querySelector('.js-dd-focus').focus()
+  
+            if (target.classList.contains(toggleClass)) {
+              target.classList.remove(toggleClass)
+              el.classList.remove("-is-dd-wrap-active")
+            } else {
+              closeAllDropdowns()
+              target.classList.add(toggleClass)
+              el.classList.add("-is-dd-wrap-active")
+            }
+          })
+        })
+      })
+    }
+  
+    function closeAllDropdowns() {
+      const classes = document.querySelectorAll(".-is-dd-wrap-active")
+      if (classes) {
+        classes.forEach(el => {
+          el.classList.remove('-is-dd-wrap-active')
+        });
+      }
+  
+      const targets = document.querySelectorAll(".js-form-dd")
+      if (!targets) return
+    
+      targets.forEach((el) => {
+        const eventElement = el.querySelector('[data-x-dd]')
+        const eventTarget = el.querySelector('[data-x-dd-click]')
+        const attributes = eventTarget.getAttribute('data-x-dd-click').split(', ')
+        
+        attributes.forEach((el) => {
+          eventElement.classList.remove('-is-active')
+          const target = document.querySelector(`[data-x-dd=${el}]`)
+          const toggleClass = target.getAttribute('data-x-dd-toggle')
+          target.classList.remove(toggleClass)
+        })
+      })
+    }
+  
+    return {
+      ddInit: ddInit,
+      closeAllDropdowns: closeAllDropdowns,
+      init: init,
+    }
+  })()
+  
+  })();
+  
